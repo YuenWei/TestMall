@@ -34,6 +34,7 @@ import GoodsList from 'components/content/goods/GoodsList'
 import BackTop from 'components/content/backTop/BackTop'
 
 import {getHomeData, getHomeGoods} from 'network/home'
+import {BACKTOP_DISTANCE} from 'common/const'
 
 //2 Scroll组件及
 import BScroll from 'better-scroll'
@@ -172,7 +173,7 @@ export default {
     contentScroll(position){
       // 判断是否显示返回顶部
       // console.log(position);
-      this.isShow = -(position.y) > 1000
+      this.isShow = -(position.y) > BACKTOP_DISTANCE
 
       // 判断是否吸顶
       this.isTabFixed = (-position.y) > this.tabOffsetTop
