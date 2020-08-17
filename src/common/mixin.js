@@ -1,4 +1,4 @@
-export const backTopMinxin = {
+export const backTopMixin = {
   data() {
     return {
       isShow: false
