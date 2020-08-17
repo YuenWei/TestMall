@@ -10,7 +10,8 @@
       <DetailRecommend ref="recommend"></DetailRecommend><!-- 推荐放到商品详细图片之前，避免图片加载造成的offsetTop定位错误 -->
       <DetailInfo :detailInfo="detailInfo" @imageLoad="imageLoad"></DetailInfo>
     </Scroll>
-    <DetailBottomBar></DetailBottomBar>
+    <DetailBottomBar @addCart="addToCart"></DetailBottomBar>
+     <BackTop @click.native="backTopClick" v-show="isShow"></BackTop>
   </div>
 </template>
 
@@ -25,11 +26,16 @@ import DetailParams from './childComps/DetailParams'
 import DetailComment from './childComps/DetailComment'
 import DetailRecommend from './childComps/DetailRecommend'
 import DetailBottomBar from './childComps/DetailBottomBar'
+import BackTop from 'components/content/backTop/BackTop'
+
+import {backTopMixin} from 'common/mixin'
+import {BACKTOP_DISTANCE} from 'common/const'
 
 import {getDetail, Goods, Shop, Params, getRecommend} from 'network/detail'
 
 export default {
   name: 'Detail',
+  mixins: [backTopMixin],
   data() {
     return {
       id: null,
@@ -57,7 +63,8 @@ export default {
     DetailInfo,
     DetailComment,
     DetailRecommend,
-    DetailBottomBar
+    DetailBottomBar,
+    BackTop
   },
   created() {
     // 1.保存传入的商品ID
@@ -133,6 +140,7 @@ export default {
       console.log(index);
       this.$refs.scroll.scrollTo(0, -this.scrollY[index], 500)
     },
+    
     imageLoad(){
       this.$refs.scroll.scroll.refresh()
 
@@ -153,6 +161,10 @@ export default {
     contentScroll(position) {
       this.positionY = -(position.y)
       console.log(this.positionY);
+
+      // 判断显示返回顶部
+      this.isShow = -(position.y) > BACKTOP_DISTANCE
+
       // 导航offsetTop[0, a, b, c]
       // 0 < positionY < a 在 index[0]
       // a < positionY < b 在 index[1]
@@ -185,7 +197,40 @@ export default {
         // scrollY[].push(Number.MAX_VALUE)
       }
 
+    },
+    
+    // home里存在返回顶部，复制到此处重复代码太多
+    // 使用混入减少代码重新
+    // backTopClick(){
+    //   console.log('组件原生事件.native')
+    //   // 1.scroll回到顶部
+    //   // this.$refs.scroll.scroll.scrollTo(0, 0, 500)
+
+    //   // 2.封装scroll,调用Scroll.vue中的scrollTo()方法
+    //   this.$refs.scroll.scrollTo(0, 0 ,500)
+    // },
+    // contentScroll(position){
+    //   // 判断是否显示返回顶部
+    //   // console.log(position);
+    //   this.isShow = -(position.y) > BACKTOP_DISTANCE
+    // },
+
+    addToCart(){
+      // 1.从当前data获取购物车需要展示的信息(缩略图，名称，描述，价格，件数=购物车按钮点击次数)
+      const product = {};
+      product.id = this.id;
+      product.image = this.topImages[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      product.count = 0
+      console.log(product);
+
+      // 2.使用Vuex在多个界面共享购物车商品信息
+      // 修改state>goodsList 须在mutations:{}
+      this.$store.commit('addCart', product)
     }
+
   },
 }
 </script>
