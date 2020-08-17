@@ -61,5 +61,5 @@ export default {
 </script>
 
 <style scoped>
-.content{float:left;}
+.content{width:100%;float:left;}
 </style>
