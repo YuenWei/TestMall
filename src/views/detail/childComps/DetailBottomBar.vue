@@ -6,7 +6,7 @@
       <span><img src="~assets/images/common/favorite.svg"><h3>收藏</h3></span>
     </div>
     <div class="bottom-bar-right">
-      <span class="cart">加入购物车</span>
+      <span class="cart" @click="addToCart">加入购物车</span>
       <span class="buy">立即购买</span>
     </div>
   </div>
@@ -14,7 +14,12 @@
 
 <script>
 export default {
-  name: 'DetailBottomBar'
+  name: 'DetailBottomBar',
+  methods: {
+    addToCart(){
+      this.$emit('addCart')
+    }
+  },
 }
 </script>
 
