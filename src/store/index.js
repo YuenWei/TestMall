@@ -43,11 +43,28 @@ const store = new Vuex.Store({
         oldProduct.count +=1
       }else{
         payload.count = 1
+        payload.checked = true /* 默认加入购物车的商品在购物车选中 */
         state.goodsList.unshift(payload)
       }
 
       // 3.重构，抽离actions,mutations
     }
+    
+
+    // dispatch 方法
+    // addCart(context, payload){
+    //   console.log(payload);
+    //   // const oldProduct = state.goodsList.find(item => item.id === payload.id)
+    //   const oldProduct = state.goodsList.find(item => item.id === payload.id)
+    //   if(oldProduct){
+    //     oldProduct.count +=1
+    //     context.commit()
+    //   }else{
+    //     payload.count = 1
+    //     payload.checked = true /* 默认加入购物车的商品在购物车选中 */
+    //     state.goodsList.unshift(payload)
+    //   }
+    // }
   }
 })
 
