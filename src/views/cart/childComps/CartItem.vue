@@ -1,7 +1,7 @@
 <template>
   <div class="cart-item">
      <div class="cart-item-check" @click="goodsSelect">
-        <i v-if="isCheck" ><img src="~assets/images/common/checkbox-fill.svg"></i>
+        <i v-if="itemInfo.checked" ><img src="~assets/images/common/checkbox-fill.svg"></i>
         <i v-else><img src="~assets/images/common/checkbox.svg"></i>
      </div>
      <div class="cart-item-info">
@@ -14,11 +14,11 @@
           <h4>
             <b><small>¥</small>{{itemInfo.price}}</b>
             <div class="num-wrap">
-              <span class="minus">-</span>
+              <!-- <span class="minus">-</span> -->
               <div class="input-wrap">
                 <input type="number" :value="itemInfo.count">
               </div>
-              <span class="plus">+</span>
+              <!-- <span class="plus">+</span> -->
             </div>
           </h4>
          </div>
@@ -31,17 +31,30 @@ export default {
   name: 'Cartitem',
   data() {
     return {
-      isCheck: false
+      isCheck: true,
     }
   },
   props: {
     itemInfo: {
       type: Object
+    },
+    isChecked:{
+      type: Boolean,
+      // default: false
     }
+  },
+  computed: {
+    // isCheck(){
+    //   return this.itemInfo.checked
+    // }
   },
   methods: {
     goodsSelect(){
       this.isCheck = !this.isCheck
+      // console.log(this.$store.state.goodsList.checked);
+      // 修改商品状态一定在模型中，也就是vuex
+      this.itemInfo.checked = this.isCheck
+      console.log(this.itemInfo.checked);
     }
   },
 }
@@ -50,8 +63,8 @@ export default {
 <style>
 .cart-item{width:calc(100% - 1rem);padding:1.25rem .5rem;background:#fff;border-top:.5rem solid #f2f2f2;float:left}
 .cart-item:last-child{border-bottom:.5rem solid #f2f2f2;}
-.cart-item-check,.cart-item-check i,.cart-item-check i img{width:16px;height:16px;}
-.cart-item-check{margin:37px 7px 0;float:left;text-align:center;margin-top:37px;}
+.cart-item-check,.cart-item-check i,.cart-item-check i img{width:20px;height:20px;}
+.cart-item-check{margin:35px 5px 0;float:left;text-align:center;}
 .cart-item-info{width:calc(100% - 30px);float:left}
 .cart-item-info-img{width:64px;height:90px;border-radius:3px;float:left}
 .cart-item-info-img img{width:64px;height:90px;}
@@ -66,5 +79,5 @@ export default {
 .num-wrap span,.num-wrap .input-wrap{float:left;}
 .num-wrap span,.input-wrap input{color:#000;font-size:13px;font-weight:bold;}
 .num-wrap span{line-height:16px;margin:0 4px;}
-.input-wrap input{width:26px;height:10px;padding:2px 5px;background:#f2f2f2;text-align:center;}
+.input-wrap input{width:26px;height:14px;line-height:14px;padding:0px 5px;background:#f2f2f2;text-align:center;}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div v-if="$store.state.goodsList.length" class="cart-list">
-    <CartItem v-for="item in cartList" :itemInfo="item"></CartItem>
+    <CartItem v-for="item in cartList" :itemInfo="item" :isChecked="item.checked"></CartItem>
   </div>
   <div v-else class="cart-none">
     <img src="~assets/images/common/cart-none.svg">
